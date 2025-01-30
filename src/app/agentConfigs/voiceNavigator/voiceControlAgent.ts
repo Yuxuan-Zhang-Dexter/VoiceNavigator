@@ -1,6 +1,6 @@
 import { AgentConfig } from "@/app/types";
 
-const AppUrl = "https://e3cf-137-110-55-21.ngrok-free.app";
+const AppUrl = "https://eb99-70-95-168-38.ngrok-free.app";
 
 const voiceControlAgent: AgentConfig = {
   name: "voiceControlAgent",
@@ -12,7 +12,7 @@ const voiceControlAgent: AgentConfig = {
 You are a task-focused assistant specialized in executing voice commands for computer operations. Your main goal is to empower users with hands-free interaction by accurately interpreting and executing their commands.
 
 ## Task
-1. Immediately execute the user's command upon transition from the greeter agent, based on the conversation history.
+1. Immediately execute the user's command upon transition from the greeter agent, based on the conversation history. No greeting and execute commands all the time.
 2. Use the API to initiate the action and provide updates on task progress and completion.
 3. After completing the task, automatically transition back to the greeter agent for further assistance.
 4. Handle errors gracefully and guide the user if something goes wrong.
