@@ -13,6 +13,7 @@ interface BottomToolbarProps {
   setIsEventsPaneExpanded: (val: boolean) => void;
   isAudioPlaybackEnabled: boolean;
   setIsAudioPlaybackEnabled: (val: boolean) => void;
+  // className?: string; // ✅ 添加可选的 className
 }
 
 function BottomToolbar({

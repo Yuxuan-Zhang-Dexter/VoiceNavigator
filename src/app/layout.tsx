@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Realtime API Agents",
-  description: "A demo app from OpenAI.",
+  title: "VoiceNavigator",
+  description: "A Voice Navigator, helping people to navigate through the world.",
+  icons: "VoiceNavigatorIcon.png",
 };
 
 export default function RootLayout({
