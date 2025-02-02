@@ -43,8 +43,6 @@ function App() {
   const [sessionStatus, setSessionStatus] =
     useState<SessionStatus>("DISCONNECTED");
 
-  const [isEventsPaneExpanded, setIsEventsPaneExpanded] =
-    useState<boolean>(true);
   const [userText, setUserText] = useState<string>("");
   const [isPTTActive, setIsPTTActive] = useState<boolean>(false);
   const [isPTTUserSpeaking, setIsPTTUserSpeaking] = useState<boolean>(false);
@@ -360,13 +358,79 @@ function App() {
   const [currentGif, setCurrentGif] = useState("waiting2"); // 当前显示的 GIF，默认是 waiting1
 
   // 根据事件更新 GIF 状态的回调函数
-  const handleLogEvent = (eventName: string) => {
+  const handleLogEvent = (eventName: string, eventData?: any) => {
+    console.log("Received event:", eventName, eventData); // 让控制台打印调试信息
+  
     if (eventName === "output_audio_buffer.audio_stopped") {
       setCurrentGif("waiting2"); // 切换到等待状态
     } else if (eventName === "conversation.item.created") {
       setCurrentGif("loading3"); // 切换到加载状态
+    } else if (eventName === "transcript_updated" && eventData) {
+      // 检查文本内容是否包含 "function call: transferAgents"
+      if (typeof eventData === "string" && eventData.includes("function call:")) {
+        console.log("Switching to switching1.gif"); // 调试信息
+        setCurrentGif("switching1");
+      }
     }
   };
+
+  // log显示框 是否存在，基于屏幕比例的判断
+  const [isEventsPaneExpanded, setIsEventsPaneExpanded] = useState<boolean>(true);
+  const [isWideScreen, setIsWideScreen] = useState<boolean>(true);
+  const [isUserLogEnabled, setIsUserLogEnabled] = useState<boolean>(true); // 用户是否手动启用 `log`
+
+  useEffect(() => {
+    // 监听屏幕尺寸变化
+    const updateScreenRatio = () => {
+      const screenRatio = window.innerWidth / window.innerHeight;
+      setIsWideScreen(screenRatio >= 1);
+    };
+
+    window.addEventListener("resize", updateScreenRatio);
+    updateScreenRatio();
+
+    return () => window.removeEventListener("resize", updateScreenRatio);
+  }, []);
+
+  useEffect(() => {
+    // 读取本地存储的 `log` 展示设置
+    const storedLogsExpanded = localStorage.getItem("logsExpanded");
+    if (storedLogsExpanded) {
+      const isLogEnabled = storedLogsExpanded === "true";
+      setIsUserLogEnabled(isLogEnabled); // 记录用户的手动偏好
+      setIsEventsPaneExpanded(isLogEnabled); // 仅在初始化时尊重用户设置
+    }
+  }, []);
+
+  useEffect(() => {
+    // 监听屏幕变化 & 用户选择，确保 `log` 状态正确
+    if (!isWideScreen) {
+      setIsEventsPaneExpanded(false); // 屏幕窄时，自动隐藏 `log`
+    } else if (isUserLogEnabled) {
+      setIsEventsPaneExpanded(true); // 屏幕恢复宽比 1:1 以上，并且用户允许 `log`，则恢复显示
+    }
+  }, [isWideScreen, isUserLogEnabled]);
+
+  useEffect(() => {
+    // 存储 `log` 的展开状态
+    localStorage.setItem("logsExpanded", isEventsPaneExpanded.toString());
+  }, [isEventsPaneExpanded]);
+
+  // Tool bar 是否存在，基于屏幕比例的判断
+  const [isToolbarVisible, setIsToolbarVisible] = useState<boolean>(true);
+  useEffect(() => {
+    const updateScreenRatio = () => {
+      const screenRatio = window.innerWidth / window.innerHeight;
+      setIsWideScreen(screenRatio >= 1);
+      setIsToolbarVisible(screenRatio >= 1); // 当 H > W 时隐藏工具栏
+    };
+
+    window.addEventListener("resize", updateScreenRatio);
+    updateScreenRatio();
+
+    return () => window.removeEventListener("resize", updateScreenRatio);
+  }, []);
+
 
   useEffect(() => {
     const storedPushToTalkUI = localStorage.getItem("pushToTalkUI");
@@ -523,26 +587,33 @@ function App() {
             sessionStatus === "CONNECTED" && // 检查会话状态是否已连接
             dcRef.current?.readyState === "open" // 检查连接是否打开
           }
+          onLogEvent={handleLogEvent} // 确保 `handleLogEvent` 被正确传递
         />
   
         {/* 右侧：Events 组件 */}
         <Events isExpanded={isEventsPaneExpanded} onLogEvent={handleLogEvent}/> {/* 日志面板是否展开 */}
       </div>
-  
-      {/* 底部工具栏 */}
-      <BottomToolbar
-        sessionStatus={sessionStatus} // 会话状态
-        onToggleConnection={onToggleConnection} // 切换连接状态的事件
-        isPTTActive={isPTTActive} // PTT（按住说话）状态
-        setIsPTTActive={setIsPTTActive} // 设置 PTT 状态的函数
-        isPTTUserSpeaking={isPTTUserSpeaking} // 检查用户是否在讲话
-        handleTalkButtonDown={handleTalkButtonDown} // 按下说话按钮事件
-        handleTalkButtonUp={handleTalkButtonUp} // 释放说话按钮事件
-        isEventsPaneExpanded={isEventsPaneExpanded} // 日志面板是否展开
-        setIsEventsPaneExpanded={setIsEventsPaneExpanded} // 设置日志面板展开状态
-        isAudioPlaybackEnabled={isAudioPlaybackEnabled} // 音频播放是否启用
-        setIsAudioPlaybackEnabled={setIsAudioPlaybackEnabled} // 设置音频播放状态
-      />
+
+      <div
+        className={`transition-transform duration-300 ease-in-out ${
+          isToolbarVisible ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        {/* 底部工具栏 */}
+        <BottomToolbar
+          sessionStatus={sessionStatus} // 会话状态
+          onToggleConnection={onToggleConnection} // 切换连接状态的事件
+          isPTTActive={isPTTActive} // PTT（按住说话）状态
+          setIsPTTActive={setIsPTTActive} // 设置 PTT 状态的函数
+          isPTTUserSpeaking={isPTTUserSpeaking} // 检查用户是否在讲话
+          handleTalkButtonDown={handleTalkButtonDown} // 按下说话按钮事件
+          handleTalkButtonUp={handleTalkButtonUp} // 释放说话按钮事件
+          isEventsPaneExpanded={isEventsPaneExpanded} // 日志面板是否展开
+          setIsEventsPaneExpanded={setIsEventsPaneExpanded} // 设置日志面板展开状态
+          isAudioPlaybackEnabled={isAudioPlaybackEnabled} // 音频播放是否启用
+          setIsAudioPlaybackEnabled={setIsAudioPlaybackEnabled} // 设置音频播放状态
+        />
+      </div>
     </div>
   );  
 }

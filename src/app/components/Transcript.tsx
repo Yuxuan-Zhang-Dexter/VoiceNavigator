@@ -11,6 +11,7 @@ export interface TranscriptProps {
   setUserText: (val: string) => void; // 用于更新用户输入文本的函数
   onSendMessage: () => void; // 发送消息的回调函数
   canSend: boolean; // 是否可以发送消息
+  onLogEvent?: (eventName: string, eventData?: any) => void; // 添加 onLogEvent 回调函数
 }
 
 function Transcript({
@@ -18,6 +19,7 @@ function Transcript({
   setUserText,
   onSendMessage,
   canSend,
+  onLogEvent, // 添加解构 onLogEvent
 }: TranscriptProps) {
   const { transcriptItems, toggleTranscriptItemExpand } = useTranscript();
   const transcriptRef = useRef<HTMLDivElement | null>(null); // 对话框的引用，用于滚动控制
@@ -47,8 +49,22 @@ function Transcript({
       scrollToBottom();
     }
 
+    // 获取最新的对话内容
+    if (hasNewMessage) {
+      const latestMessage = transcriptItems[transcriptItems.length - 1]?.title || "";
+      
+      console.log("New transcript message:", latestMessage); // 调试信息
+
+      // 检查是否包含 "function call: transferAgents"
+      if (onLogEvent && latestMessage.includes("function call:")) {
+        console.log("Triggering switching1.gif");
+        onLogEvent("transcript_updated", latestMessage);
+      }
+    }
+
     setPrevLogs(transcriptItems);
-  }, [transcriptItems]);
+  }, [transcriptItems, onLogEvent]);
+
     
   // Autofocus on text box input on load
   useEffect(() => {
@@ -122,7 +138,7 @@ function Transcript({
                 </div>
               );
             } else if (type === "BREADCRUMB") {
-              // 面包屑类型
+              // 特殊消息类型，比如function和switch agent
               return (
                 <div
                   key={itemId}
