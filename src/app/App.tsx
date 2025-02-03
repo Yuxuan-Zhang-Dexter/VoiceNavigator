@@ -377,7 +377,7 @@ function App() {
   // log显示框 是否存在，基于屏幕比例的判断
   const [isEventsPaneExpanded, setIsEventsPaneExpanded] = useState<boolean>(true);
   const [isWideScreen, setIsWideScreen] = useState<boolean>(true);
-  const [isUserLogEnabled, setIsUserLogEnabled] = useState<boolean>(true); // 用户是否手动启用 `log`
+  const [isUserLogEnabled, setIsUserLogEnabled] = useState<boolean>(true); // 记录用户是否手动启用 `log`
 
   useEffect(() => {
     // 监听屏幕尺寸变化
@@ -418,6 +418,7 @@ function App() {
 
   // Tool bar 是否存在，基于屏幕比例的判断
   const [isToolbarVisible, setIsToolbarVisible] = useState<boolean>(true);
+
   useEffect(() => {
     const updateScreenRatio = () => {
       const screenRatio = window.innerWidth / window.innerHeight;
@@ -431,6 +432,41 @@ function App() {
     return () => window.removeEventListener("resize", updateScreenRatio);
   }, []);
 
+  // body 的 overflow 逻辑
+  useEffect(() => {
+    if (!isWideScreen || !isToolbarVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isWideScreen, isToolbarVisible]);
+
+
+  // 新增状态：控制导航栏是否显示
+  const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(true);
+
+  useEffect(() => {
+    const updateScreenRatio = () => {
+      const screenRatio = window.innerWidth / window.innerHeight;
+      setIsWideScreen(screenRatio >= 1);
+      setIsNavbarVisible(screenRatio >= 1); // 当 H > W 时隐藏导航栏
+    };
+
+    window.addEventListener("resize", updateScreenRatio);
+    updateScreenRatio();
+
+    return () => window.removeEventListener("resize", updateScreenRatio);
+  }, []);
+
+  // 处理 `transform` 使导航栏隐藏或显示
+  const navbarStyles: React.CSSProperties = {
+    transform: isNavbarVisible ? "translateY(0)" : "translateY(-200%)",
+    transition: "transform 0.3s ease-in-out",
+  };
 
   useEffect(() => {
     const storedPushToTalkUI = localStorage.getItem("pushToTalkUI");
@@ -490,18 +526,19 @@ function App() {
               alt="VNLOGO" // 图标替代文本
               width={24} // 图标宽度
               height={24} // 图标高度
-              className="mr-2" // 图标右侧外边距
+              className="mr-[0.8vw]" // 图标右侧外边距
+              style={{width: "2vw",height: "2vw",}}
             />
           </div>
-          <div>
+          <div style={{ fontSize: "1.5vw" }}>
             {/* 页面标题 */}
             VoiceNavigator <span className="text-gray-500">Agents</span>
           </div>
         </div>
   
-        <div className="flex items-center">
+        <div className="flex items-center" style={navbarStyles}>
           {/* 场景选择框 */}
-          <label className="flex items-center text-base gap-1 mr-2 font-medium">
+          <label className="flex items-center text-base gap-1 mr-[0.5vw] font-medium" style={{ fontSize: "1.3vw" }}>
             Scenario
           </label>
           <div className="relative inline-block">
@@ -510,6 +547,15 @@ function App() {
               value={agentSetKey} // 当前选中的场景
               onChange={handleAgentChange} // 场景切换事件
               className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
+              style={{
+                fontSize: "1.2vw",
+                padding: "0vw 0.7vw",
+                height: "5vh",
+                width: "13vw",
+                display: "flex",       // 让 select 内部的文本使用 flex 布局
+                alignItems: "center",  // 垂直居中
+                justifyContent: "center", // 水平居中
+              }}
             >
               {/* 动态生成场景选项 */}
               {Object.keys(allAgentSets).map((agentKey) => (
@@ -520,7 +566,7 @@ function App() {
             </select>
             {/* 下拉框右侧的图标 */}
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-600">
-              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <svg className="h-[2vw] w-[2vw]" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
                   d="M5.23 7.21a.75.75 0 011.06.02L10 10.44l3.71-3.21a.75.75 0 111.04 1.08l-4.25 3.65a.75.75 0 01-1.04 0L5.21 8.27a.75.75 0 01.02-1.06z"
@@ -533,7 +579,7 @@ function App() {
           {/* 如果场景已选择，显示 Agent 选择框 */}
           {agentSetKey && (
             <div className="flex items-center ml-6">
-              <label className="flex items-center text-base gap-1 mr-2 font-medium">
+              <label className="flex items-center text-base gap-1 mr-[0.5vw] font-medium" style={{ fontSize: "1.3vw" }}>
                 Agent
               </label>
               <div className="relative inline-block">
@@ -542,6 +588,15 @@ function App() {
                   value={selectedAgentName} // 当前选中的 Agent
                   onChange={handleSelectedAgentChange} // Agent 切换事件
                   className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
+                  style={{
+                    fontSize: "1.2vw",
+                    padding: "0vw 0.7vw",
+                    height: "5vh",
+                    width: "13vw",
+                    display: "flex",       // 让 select 内部的文本使用 flex 布局
+                    alignItems: "center",  // 垂直居中
+                    justifyContent: "center", // 水平居中
+                  }}
                 >
                   {/* 动态生成 Agent 选项 */}
                   {selectedAgentConfigSet?.map((agent) => (
@@ -552,7 +607,7 @@ function App() {
                 </select>
                 {/* 下拉框右侧的图标 */}
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-600">
-                  <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-[2vw] w-[2vw]" viewBox="0 0 20 20" fill="currentColor">
                     <path
                       fillRule="evenodd"
                       d="M5.23 7.21a.75.75 0 011.06.02L10 10.44l3.71-3.21a.75.75 0 111.04 1.08l-4.25 3.65a.75.75 0 01-1.04 0L5.21 8.27a.75.75 0 01.02-1.06z"

@@ -1,6 +1,6 @@
 import { AgentConfig } from "@/app/types";
 
-const AppUrl = "https://eb99-70-95-168-38.ngrok-free.app";
+const AppUrl = "https://7522-128-54-39-168.ngrok-free.app"; //换成Ngrok link
 
 /**
  * image2txtAgent

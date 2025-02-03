@@ -13,7 +13,6 @@ interface BottomToolbarProps {
   setIsEventsPaneExpanded: (val: boolean) => void;
   isAudioPlaybackEnabled: boolean;
   setIsAudioPlaybackEnabled: (val: boolean) => void;
-  // className?: string; // ✅ 添加可选的 className
 }
 
 function BottomToolbar({
@@ -51,11 +50,12 @@ function BottomToolbar({
   }
 
   return (
-    <div className="p-4 flex flex-row items-center justify-center gap-x-8">
+    <div className="p-4 flex flex-row items-center justify-center gap-x-8" style={{ height: '11vh' }}>
       <button
         onClick={onToggleConnection}
         className={getConnectionButtonClasses()}
         disabled={isConnecting}
+        style={{ width: "20vh", height: "6vh", fontSize: "2.4vh", lineHeight: "1", padding: "0", alignItems: "center", justifyContent: "center", }}
       >
         {getConnectionButtonLabel()}
       </button>
@@ -69,7 +69,7 @@ function BottomToolbar({
           disabled={!isConnected}
           className="w-4 h-4"
         />
-        <label htmlFor="push-to-talk" className="flex items-center cursor-pointer">
+        <label htmlFor="push-to-talk" className="flex items-center cursor-pointer" style={{ fontSize: "2.4vh" }}>
           Push to talk
         </label>
         <button
@@ -82,7 +82,7 @@ function BottomToolbar({
             (isPTTUserSpeaking ? "bg-gray-300" : "bg-gray-200") +
             " py-1 px-4 cursor-pointer rounded-full" +
             (!isPTTActive ? " bg-gray-100 text-gray-400" : "")
-          }
+          } style={{width: "8vh", height: "5vh", fontSize: "2vh", lineHeight: "1", padding: "0", alignItems: "center", justifyContent: "center",}}
         >
           Talk
         </button>
@@ -97,7 +97,7 @@ function BottomToolbar({
           disabled={!isConnected}
           className="w-4 h-4"
         />
-        <label htmlFor="audio-playback" className="flex items-center cursor-pointer">
+        <label htmlFor="audio-playback" className="flex items-center cursor-pointer" style={{ fontSize: "2.4vh" }}>
           Audio playback
         </label>
       </div>
@@ -110,7 +110,7 @@ function BottomToolbar({
           onChange={e => setIsEventsPaneExpanded(e.target.checked)}
           className="w-4 h-4"
         />
-        <label htmlFor="logs" className="flex items-center cursor-pointer">
+        <label htmlFor="logs" className="flex items-center cursor-pointer" style={{ fontSize: "2.4vh" }}>
           Logs
         </label>
       </div>
