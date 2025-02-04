@@ -33,3 +33,22 @@ body {
 .animate-float {
   animation: float 3s ease-in-out infinite; /* 无限循环动画，周期为 2.7 秒 */
 }
+
+/* 适用于 Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px; /* 使滚动条更细 */
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* 轨道透明 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #647ec0; /* 滚动条颜色 */
+  border-radius: 3px; /* 圆角 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #39549c; /* 悬浮时颜色变暗 */
+}
