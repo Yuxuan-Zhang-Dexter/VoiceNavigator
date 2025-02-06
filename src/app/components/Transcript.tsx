@@ -27,6 +27,32 @@ function Transcript({
   const [justCopied, setJustCopied] = useState(false); // 是否刚刚完成复制
   const inputRef = useRef<HTMLInputElement | null>(null); // 输入框的引用
 
+  // 监听屏幕大小
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 计算动态样式
+  const fontSize = `${screenSize.height * 0.018}px`; // 1.8% 屏幕高度
+  const smallFontSize = `${screenSize.height * 0.015}px`; // 1.5% 屏幕高度
+  const timestampFontSize = `${screenSize.height * 0.014}px`; // 时间戳字体 1.4% 屏幕高度
+  const bubblePadding = `${screenSize.height * 0.010}px ${screenSize.width * 0.015}px`; // 使 padding 依赖屏幕尺寸
+  const breadcrumbPadding = `${screenSize.height * 0.001}px ${screenSize.width * 0.001}px`; // BREADCRUMB 类型的 padding
+  const inputHeight = `${screenSize.height * 0.05}px`; // 输入框高度 6% 屏幕高度
+  const buttonSize = `${screenSize.height * 0.04}px`; // 按钮大小 5% 屏幕高度
+
   function scrollToBottom() {
     // 滚动到对话框底部
     if (transcriptRef.current) {
@@ -125,9 +151,9 @@ function Transcript({
 
               return (
                 <div key={itemId} className={containerClasses}>
-                  <div className={bubbleBase}>
+                  <div className={bubbleBase} style={{ padding: bubblePadding, fontSize: fontSize }}>
                     {/* 显示消息时间戳 */}
-                    <div className={`text-xs ${isUser ? "text-gray-400" : "text-gray-500"} font-mono`}>
+                    <div className={`text-xs ${isUser ? "text-gray-400" : "text-gray-500"} font-mono`} style={{fontSize: timestampFontSize}}>
                       {timestamp}
                     </div>
                     {/* 显示消息内容 */}
@@ -143,13 +169,15 @@ function Transcript({
                 <div
                   key={itemId}
                   className="flex flex-col justify-start items-start text-gray-500 text-sm"
+                  style={{ padding: breadcrumbPadding }}
                 >
-                  <span className="text-xs font-mono">{timestamp}</span>
+                  <span className="text-xs font-mono" style={{ fontSize: timestampFontSize }}>{timestamp}</span>
                   <div
                     className={`whitespace-pre-wrap flex items-center font-mono text-sm text-gray-800 ${
                       data ? "cursor-pointer" : ""
                     }`}
                     onClick={() => data && toggleTranscriptItemExpand(itemId)}
+                    style={{ fontSize: fontSize, padding: breadcrumbPadding,}}
                   >
                     {data && (
                       <span
@@ -164,7 +192,7 @@ function Transcript({
                   </div>
                   {expanded && data && (
                     <div className="text-gray-800 text-left">
-                      <pre className="border-l-2 ml-1 border-gray-200 whitespace-pre-wrap break-words font-mono text-xs mb-2 mt-2 pl-2">
+                      <pre className="border-l-2 ml-1 border-gray-200 whitespace-pre-wrap break-words font-mono text-xs mb-2 mt-2 pl-2" style={{ fontSize: smallFontSize }}>
                         {JSON.stringify(data, null, 2)}
                       </pre>
                     </div>
@@ -179,7 +207,7 @@ function Transcript({
                   className="flex justify-center text-gray-500 text-sm italic font-mono"
                 >
                   Unknown item type: {type}{" "}
-                  <span className="ml-2 text-xs">{timestamp}</span>
+                  <span className="ml-2 text-xs" style={{ fontSize: timestampFontSize }}>{timestamp}</span>
                 </div>
               );
             }
@@ -200,12 +228,21 @@ function Transcript({
             }
           }}
           className="flex-1 px-4 py-2 focus:outline-none"
+          style={{
+            height: inputHeight,
+            fontSize: fontSize,
+          }}
           placeholder="Type a message..." // 占位符文本
         />
         <button
           onClick={onSendMessage}
           disabled={!canSend || !userText.trim()}
           className="bg-gray-900 text-white rounded-full px-0.5 py-0.5 disabled:opacity-50"
+          style={{
+            width: buttonSize,
+            height: buttonSize,
+            fontSize: fontSize,
+          }}
         >
           <Image src="arrow.svg" alt="Send" width={24} height={24} />
         </button>

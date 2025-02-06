@@ -16,10 +16,7 @@ function Events({ isExpanded, onLogEvent }: EventsProps) {
   const { loggedEvents, toggleExpand } = useEvent();
 
   // 监听屏幕宽度 & 高度，动态调整组件大小
-  const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const handleResize = () => {
@@ -38,10 +35,11 @@ function Events({ isExpanded, onLogEvent }: EventsProps) {
   // 动态计算大小
   const fontSize = `${screenSize.height * 0.018}px`; // 1.8% 屏幕高度
   const smallFontSize = `${screenSize.height * 0.014}px`; // 1.4% 屏幕高度
-  const logPadding = `${screenSize.height * 0.0045}px ${screenSize.width * 0.015}px`; // 基于屏幕尺寸的 padding
+  const logPadding = `${screenSize.height * 0.003}px ${screenSize.width * 0.02}px`; // 基于屏幕尺寸的 padding
+  const logTitlePadding = `${screenSize.height * 0.015}px ${screenSize.width * 0.025}px`;
 
   // 日志容器大小调整
-  const containerHeight = isExpanded ? "47vh" : "0"; // 控制日志面板高度
+  const containerHeight = isExpanded ? "100%" : "0"; // 控制日志面板高度
   const containerWidth = isExpanded ? "40vw" : "0"; // 控制日志面板宽度
 
   useEffect(() => {
@@ -76,7 +74,7 @@ function Events({ isExpanded, onLogEvent }: EventsProps) {
           {/* 日志标题 */}
           <div
             className="font-semibold px-6 py-4 sticky top-0 z-10 border-b bg-white"
-            style={{ fontSize: fontSize }}
+            style={{ fontSize: fontSize, padding: logTitlePadding}}
           >
             Logs
           </div>

@@ -355,9 +355,25 @@ function App() {
     setSelectedAgentName(newAgentName);
   };
 
-  const [currentGif, setCurrentGif] = useState("waiting2"); // 当前显示的 GIF，默认是 waiting1
+  const [currentGif, setCurrentGif] = useState("connecting"); // 当前显示的 GIF，默认是 connecting
 
   // 根据事件更新 GIF 状态的回调函数
+  // const handleLogEvent = (eventName: string, eventData?: any) => {
+  //   console.log("Received event:", eventName, eventData); // 让控制台打印调试信息
+  
+  //   if (eventName === "output_audio_buffer.audio_stopped") {
+  //     setCurrentGif("waiting2"); // 切换到等待状态
+  //   } else if (eventName === "conversation.item.created") {
+  //     setCurrentGif("loading3"); // 切换到加载状态
+  //   } else if (eventName === "transcript_updated" && eventData) {
+  //     // 检查文本内容是否包含 "function call: transferAgents"
+  //     if (typeof eventData === "string" && eventData.includes("function call:")) {
+  //       console.log("Switching to switching1.gif"); // 调试信息
+  //       setCurrentGif("switching1");
+  //     }
+  //   }
+  // };
+
   const handleLogEvent = (eventName: string, eventData?: any) => {
     console.log("Received event:", eventName, eventData); // 让控制台打印调试信息
   
@@ -366,13 +382,27 @@ function App() {
     } else if (eventName === "conversation.item.created") {
       setCurrentGif("loading3"); // 切换到加载状态
     } else if (eventName === "transcript_updated" && eventData) {
-      // 检查文本内容是否包含 "function call: transferAgents"
+      // 检查文本内容是否包含 "function call:"
       if (typeof eventData === "string" && eventData.includes("function call:")) {
-        console.log("Switching to switching1.gif"); // 调试信息
-        setCurrentGif("switching1");
+        console.log("检测到 function call, 暂停语音输入");
+        setIsPTTActive(false); // 暂停语音输入
+        setCurrentGif("switching1"); // 切换 GIF 状态
+      } else {
+        console.log("恢复语音输入");
+        setIsPTTActive(true); // 恢复语音输入
       }
     }
   };
+
+  useEffect(() => {
+    console.log(`Session status changed: ${sessionStatus}`);
+  
+    if (sessionStatus === "DISCONNECTED") {
+      setCurrentGif("connecting"); // 断开连接时显示 "connecting.gif"
+    } else if (sessionStatus === "CONNECTED") {
+      setCurrentGif("waiting2"); // 连接成功后回到默认等待状态
+    }
+  }, [sessionStatus]);
 
   // log显示框 是否存在，基于屏幕比例的判断
   const [isEventsPaneExpanded, setIsEventsPaneExpanded] = useState<boolean>(true);
@@ -519,7 +549,7 @@ function App() {
       {/* 顶部导航栏，包含页面标题和下拉选择框 */}
       <div className="p-3 text-lg font-semibold flex justify-between items-center">
         <div className="flex items-center">
-          {/* OpenAI 图标，点击后刷新页面 */}
+          {/* 图标，点击后刷新页面 */}
           <div onClick={() => window.location.reload()} style={{ cursor: "pointer" }}>
             <Image
               src="/VoiceNavigatorIcon.svg" // 图标路径
@@ -530,7 +560,7 @@ function App() {
               style={{width: "2vw",height: "2vw",}}
             />
           </div>
-          <div style={{ fontSize: "1.5vw" }}>
+          <div style={{ fontSize: "1.5vw"}}>
             {/* 页面标题 */}
             VoiceNavigator <span className="text-gray-500">Agents</span>
           </div>
