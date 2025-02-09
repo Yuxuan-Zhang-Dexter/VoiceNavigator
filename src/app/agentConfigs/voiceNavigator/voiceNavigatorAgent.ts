@@ -1,6 +1,6 @@
 import { AgentConfig } from "@/app/types";
 
-const AppUrl = "https://0bea-128-54-26-32.ngrok-free.app";
+const AppUrl = " http://127.0.0.1:8000";
 
 const voiceNavigatorAgent: AgentConfig = {
     name: "voiceNavigatorAgent",
