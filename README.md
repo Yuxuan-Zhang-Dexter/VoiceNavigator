@@ -3,7 +3,7 @@
 
 **VoiceNavigator: AI-Powered Speech-to-Speech Web Interaction System**
 
-VoiceNavigator is an innovative application that combines real-time voice assistance, LLM-driven computer operation, and image-to-text tasks to enable a hands-free online experience. With the power of AI, it allows you to navigate, operate, and interact with your computer and web applications using voice commands.
+VoiceNavigator is an innovative application that combines real-time voice assistance, LLM-driven computer operation, and image-to-text tasks to enable a hands-free online web browsing experience. With the power of AI, it allows you to navigate, operate, and interact with your computer and web applications using voice commands.
 
 ## ✨ Features
 
@@ -26,7 +26,7 @@ Enjoy a fully hands-free, voice-controlled experience powered by cutting-edge AI
 
 ### ✅ Prerequisites
 
-- **OpenAI API Key**: You need an OpenAI API key to run the project. Add it to the `.env` file.
+- **OpenAI API Key**: Required for NLP capabilities. Get one at [OpenAI Platform](https://platform.openai.com/) (requires OpenAI account and payment method). Add the key to the `.env` file.
 - **Node.js**: Ensure you have Node.js installed for the frontend.
 - **Python**: Required for running the backend.
 
@@ -36,7 +36,7 @@ Enjoy a fully hands-free, voice-controlled experience powered by cutting-edge AI
 
 The frontend is a **Next.js TypeScript** app.
 
-1. Navigate to the project directory for the frontend.
+1. Clone the repository and navigate to the project directory for the frontend.
 2. Install dependencies:
    ```bash
    npm install
@@ -71,7 +71,7 @@ The backend is a Flask app that supports LLM-driven operations and image-to-text
    ```
    The backend will host an API to enable:
    - 🤖 LLM-driven computer operations, such as opening applications or interacting with web pages.
-   - 🖼️ Image-to-text functionality for interpreting images.
+   - 🖼️ Image-to-text functionality for interpreting screenshots and suggesting next actions.
 
 ---
 
@@ -79,7 +79,7 @@ The backend is a Flask app that supports LLM-driven operations and image-to-text
 
 - 🗣️ Hands-Free Operations: Use natural language to interact with your computer and web apps.
   - Example: Say "Open YouTube" to launch YouTube in a browser.
-  - The system can also describe web pages, giving you contextual understanding of the content.
+  - The system can also describe web pages, giving you contextual understanding of the content and guidance on possible next actions.
 - 🌟 AI-Powered Accessibility: Extract text from images or perform operations without touching a keyboard or mouse.
 
 ---
