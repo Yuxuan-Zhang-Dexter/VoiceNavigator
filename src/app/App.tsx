@@ -377,7 +377,7 @@ function App() {
   const handleLogEvent = (eventName: string, eventData?: any) => {
     console.log("Received event:", eventName, eventData); // 让控制台打印调试信息
   
-    if (eventName === "output_audio_buffer.audio_stopped") {
+    if (eventName === "output_audio_buffer.stopped") {
       setCurrentGif("waiting2"); // 切换到等待状态
     } else if (eventName === "conversation.item.created") {
       setCurrentGif("loading3"); // 切换到加载状态

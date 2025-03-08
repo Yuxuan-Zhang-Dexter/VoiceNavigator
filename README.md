@@ -3,9 +3,25 @@
 
 **VoiceNavigator: AI-Powered Speech-to-Speech Web Interaction System**
 
+![FlashBit Horizontal Logo](public/component1.png)
+
+<p align="center">
+  🌐 <a href="https://kujicheng.github.io/VoiceNavigator-webpage/">Visit VoiceNavigator Webpage</a>
+</p>
+
+<!-- [![Website](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://kujicheng.github.io/VoiceNavigator-webpage/)
+
+Check out our project: [VoiceNavigator Webpage](https://kujicheng.github.io/VoiceNavigator-webpage/) -->
+
+
 VoiceNavigator is an innovative application that combines real-time voice assistance, LLM-driven computer operation, and image-to-text tasks to enable a hands-free online web browsing experience. With the power of AI, it allows you to navigate, operate, and interact with your computer and web applications using voice commands.
 
 ## ✨ Features
+
+<p align="center">
+  <img src="public/component2.png" alt="AI Collaboration Poster" width="95%">
+</p>
+
 
 1. 🎧 **Real-Time Voice Assistant**: Interact with the system seamlessly using voice commands.
 2. 🤖 **LLM-Driven Computer Operations**: Perform actions like opening applications, interacting with web pages, and more.
