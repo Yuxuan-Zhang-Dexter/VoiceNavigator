@@ -53,6 +53,10 @@ Enjoy a fully hands-free, voice-controlled experience powered by cutting-edge AI
 The frontend is a **Next.js TypeScript** app.
 
 1. Clone the repository and navigate to the project directory for the frontend.
+   ```bash
+   git clone https://github.com/Yuxuan-Zhang-Dexter/VoiceNavigator
+   cd VoiceNavigator
+   ```
 2. Install dependencies:
    ```bash
    npm install
@@ -61,9 +65,13 @@ The frontend is a **Next.js TypeScript** app.
    ```plaintext
    OPENAI_API_KEY=your_openai_api_key_here
    ```
+   or setting temporary API key:
+   ```bash
+   set OPENAI_API_KEY=your_openai_api_key_here
+   ```
 4. Start the server:
    ```bash
-   npm run dev
+   npm run dev # run the front-end system
    ```
    The frontend server will start, and you can interact with the system via the web interface.
 
@@ -73,17 +81,18 @@ The frontend is a **Next.js TypeScript** app.
 
 The backend is a Flask app that supports LLM-driven operations and image-to-text tasks.
 
-1. Navigate to the backend directory:
+1. Install the package and its dependencies from the root directory:
+   ```bash
+   cd VoiceNavigator # root directory
+   pip install . # Install Backend requirement
+   ```
+2. Open a new terminal and navigate to the backend directory:
    ```bash
    cd ./src/VoiceNavigatorBackend
    ```
-2. Install the package and its dependencies:
-   ```bash
-   pip install .
-   ```
 3. Run the backend server:
    ```bash
-   python app.py
+   python app.py # run the back-end system
    ```
    The backend will host an API to enable:
    - 🤖 LLM-driven computer operations, such as opening applications or interacting with web pages.

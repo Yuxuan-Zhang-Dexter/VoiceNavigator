@@ -578,7 +578,7 @@ function App() {
               onChange={handleAgentChange} // 场景切换事件
               className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
               style={{
-                fontSize: "1.2vw",
+                fontSize: "1vw",
                 padding: "0vw 0.7vw",
                 height: "5vh",
                 width: "13vw",
@@ -619,7 +619,7 @@ function App() {
                   onChange={handleSelectedAgentChange} // Agent 切换事件
                   className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
                   style={{
-                    fontSize: "1.2vw",
+                    fontSize: "1vw",
                     padding: "0vw 0.7vw",
                     height: "5vh",
                     width: "13vw",
