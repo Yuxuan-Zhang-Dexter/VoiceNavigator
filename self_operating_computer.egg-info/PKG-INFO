@@ -1,0 +1,173 @@
+Metadata-Version: 2.2
+Name: self-operating-computer
+Version: 1.5.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: annotated-types==0.6.0
+Requires-Dist: anyio==3.7.1
+Requires-Dist: certifi==2023.7.22
+Requires-Dist: charset-normalizer==3.3.2
+Requires-Dist: colorama==0.4.6
+Requires-Dist: contourpy==1.2.0
+Requires-Dist: cycler==0.12.1
+Requires-Dist: distro==1.8.0
+Requires-Dist: EasyProcess==1.1
+Requires-Dist: entrypoint2==1.1
+Requires-Dist: exceptiongroup==1.1.3
+Requires-Dist: fonttools==4.44.0
+Requires-Dist: h11==0.14.0
+Requires-Dist: httpcore==1.0.2
+Requires-Dist: httpx>=0.25.2
+Requires-Dist: idna==3.4
+Requires-Dist: importlib-resources==6.1.1
+Requires-Dist: kiwisolver==1.4.5
+Requires-Dist: matplotlib==3.8.1
+Requires-Dist: MouseInfo==0.1.3
+Requires-Dist: mss==9.0.1
+Requires-Dist: numpy==1.26.1
+Requires-Dist: openai==1.2.3
+Requires-Dist: packaging==23.2
+Requires-Dist: Pillow==10.1.0
+Requires-Dist: prompt-toolkit==3.0.39
+Requires-Dist: PyAutoGUI==0.9.54
+Requires-Dist: pydantic==2.4.2
+Requires-Dist: pydantic_core==2.10.1
+Requires-Dist: PyGetWindow==0.0.9
+Requires-Dist: PyMsgBox==1.0.9
+Requires-Dist: pyparsing==3.1.1
+Requires-Dist: pyperclip==1.8.2
+Requires-Dist: PyRect==0.2.0
+Requires-Dist: pyscreenshot==3.1
+Requires-Dist: PyScreeze==0.1.29
+Requires-Dist: python3-xlib==0.15
+Requires-Dist: python-dateutil==2.8.2
+Requires-Dist: python-dotenv==1.0.0
+Requires-Dist: pytweening==1.0.7
+Requires-Dist: requests==2.31.0
+Requires-Dist: rubicon-objc==0.4.7
+Requires-Dist: six==1.16.0
+Requires-Dist: sniffio==1.3.0
+Requires-Dist: tqdm==4.66.1
+Requires-Dist: typing_extensions==4.8.0
+Requires-Dist: urllib3==2.0.7
+Requires-Dist: wcwidth==0.2.9
+Requires-Dist: zipp==3.17.0
+Requires-Dist: google-generativeai==0.3.0
+Requires-Dist: aiohttp==3.9.1
+Requires-Dist: ultralytics==8.0.227
+Requires-Dist: easyocr==1.7.1
+Requires-Dist: ollama==0.1.6
+Requires-Dist: anthropic
+Requires-Dist: Flask==2.2.5
+Requires-Dist: Flask-Cors==3.0.10
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+
+
+# 🎙️ VoiceNavigator
+
+**VoiceNavigator: AI-Powered Speech-to-Speech Web Interaction System**
+
+![VoiceNavigator Horizontal Logo](public/component1.png)
+
+<p align="center">
+  🌐 <a href="https://kujicheng.github.io/VoiceNavigator-webpage/">Visit VoiceNavigator Webpage</a>
+</p>
+
+<!-- [![Website](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://kujicheng.github.io/VoiceNavigator-webpage/)
+
+Check out our project: [VoiceNavigator Webpage](https://kujicheng.github.io/VoiceNavigator-webpage/) -->
+
+
+VoiceNavigator is an innovative application that combines real-time voice assistance, LLM-driven computer operation, and image-to-text tasks to enable a hands-free online web browsing experience. With the power of AI, it allows you to navigate, operate, and interact with your computer and web applications using voice commands.
+
+## ✨ Features
+
+<p align="center">
+  <img src="public/component2.png" alt="AI Collaboration Poster" width="95%">
+</p>
+
+
+1. 🎧 **Real-Time Voice Assistant**: Interact with the system seamlessly using voice commands.
+2. 🤖 **LLM-Driven Computer Operations**: Perform actions like opening applications, interacting with web pages, and more.
+3. 🖼️ **Image-to-Text Tasks**: Extract and interpret text from images for enhanced accessibility and productivity.
+
+## 🚀 How It Works
+
+- Leveraging large language models (LLMs) for understanding and executing complex commands.
+- For example:
+  - Saying "Open YouTube" and "Open Chrome" triggers the backend API, letting the LLM operate your computer to perform these tasks.
+  - The LLM can also describe the content of the webpage you're interacting with, providing contextual insights.
+
+Enjoy a fully hands-free, voice-controlled experience powered by cutting-edge AI technologies.
+
+---
+
+## 🛠️ Getting Started
+
+### ✅ Prerequisites
+
+- **OpenAI API Key**: Required for NLP capabilities. Get one at [OpenAI Platform](https://platform.openai.com/) (requires OpenAI account and payment method). Add the key to the `.env` file.
+- **Node.js**: Ensure you have Node.js installed for the frontend.
+- **Python**: Required for running the backend.
+
+---
+
+### 🌐 Frontend Setup
+
+The frontend is a **Next.js TypeScript** app.
+
+1. Clone the repository and navigate to the project directory for the frontend.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Add your OpenAI API key to the `.env` file:
+   ```plaintext
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+4. Start the server:
+   ```bash
+   npm run dev
+   ```
+   The frontend server will start, and you can interact with the system via the web interface.
+
+---
+
+### ⚙️ Backend Setup
+
+The backend is a Flask app that supports LLM-driven operations and image-to-text tasks.
+
+1. Navigate to the backend directory:
+   ```bash
+   cd ./src/VoiceNavigatorBackend
+   ```
+2. Install the package and its dependencies:
+   ```bash
+   pip install .
+   ```
+3. Run the backend server:
+   ```bash
+   python app.py
+   ```
+   The backend will host an API to enable:
+   - 🤖 LLM-driven computer operations, such as opening applications or interacting with web pages.
+   - 🖼️ Image-to-text functionality for interpreting screenshots and suggesting next actions.
+
+---
+
+## 🔑 Key Features in Action
+
+- 🗣️ Hands-Free Operations: Use natural language to interact with your computer and web apps.
+  - Example: Say "Open YouTube" to launch YouTube in a browser.
+  - The system can also describe web pages, giving you contextual understanding of the content and guidance on possible next actions.
+- 🌟 AI-Powered Accessibility: Extract text from images or perform operations without touching a keyboard or mouse.
+
+---
+
+## 🎉 Enjoy the Experience!
+
+With VoiceNavigator, you can fully embrace a hands-free online experience, powered by state-of-the-art AI capabilities. Let the power of your voice do the work for you.
+
+Feel free to explore, experiment, and enjoy! 🎊
